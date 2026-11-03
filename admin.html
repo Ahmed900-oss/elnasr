@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>لوحة تحكم معمل النصر</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap">
+<style>
+:root{--pri:#1B3A5C;--gold:#C8A45A;--bg:#F5F5F5;--bd:#e3e7eb}
+*{box-sizing:border-box}body{margin:0;font-family:Cairo,sans-serif;background:var(--bg);color:#1d2733}
+.box{max-width:380px;margin:12vh auto;background:#fff;padding:28px;border-radius:16px;box-shadow:0 8px 30px #0002;display:grid;gap:12px}
+input,select{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;font:inherit;background:#fff}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:9px 16px;background:var(--gold);color:#fff;font-weight:700}
+.bar{background:var(--pri);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 18px}
+.wrap{max-width:1150px;margin:auto;padding:18px}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
+.stats div{background:#fff;border-radius:14px;padding:14px;text-align:center;box-shadow:0 3px 10px #0001}.stats b{display:block;font-size:1.8rem;color:var(--pri)}
+.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs button{background:#fff;color:var(--pri);border:1px solid var(--bd)}.tabs .on{background:var(--pri);color:#fff}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tools input,.tools select{width:auto;flex:1;min-width:140px}
+.tw{overflow-x:auto;background:#fff;border-radius:14px;box-shadow:0 3px 10px #0001}table{border-collapse:collapse;width:100%;min-width:780px}
+th,td{padding:10px 12px;text-align:start;border-bottom:1px solid var(--bd);font-size:.92rem;vertical-align:top}th{background:#eef2f6;color:var(--pri)}
+.del{background:#c0392b;padding:5px 10px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 3px 10px #0001;display:grid;gap:8px}.card img{width:100%;max-height:200px;object-fit:cover;border-radius:10px}
+.err{color:#c0392b;min-height:1.2em}a{color:var(--pri)}[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<form id="login" class="box"><h2 style="margin:0;color:var(--pri)">لوحة تحكم معمل النصر</h2>
+<input id="em" type="email" placeholder="البريد الإلكتروني" autocomplete="username" required>
+<input id="pw" type="password" placeholder="كلمة المرور" autocomplete="current-password" required>
+<div class="err" id="le"></div><button>تسجيل الدخول</button></form>
+
+<div id="app" hidden>
+<div class="bar"><b>🧪 لوحة تحكم معمل النصر</b><button id="out">خروج</button></div>
+<div class="wrap">
+<div class="stats"><div><b id="s1">0</b>إجمالي الحجوزات</div><div><b id="s2">0</b>قيد الانتظار</div><div><b id="s3">0</b>حجوزات اليوم</div><div><b id="s4">0</b>الروشتات</div></div>
+<div class="tabs"><button data-t="tb" class="on">الحجوزات</button><button data-t="tr">الروشتات</button></div>
+<section id="tb"><div class="tools"><input id="q" placeholder="بحث بالاسم أو الرقم…"><select id="fs"><option value="">كل الحالات</option></select><button id="csv">تصدير CSV</button></div>
+<div class="tw"><table><thead><tr><th>التاريخ</th><th>الاسم</th><th>الجوال</th><th>الخدمة</th><th>موعد الزيارة</th><th>المطلوب</th><th>الحالة</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></section>
+<section id="tr" hidden><div class="grid" id="rx"></div></section>
+</div></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* املأ بيانات مشروع Firebase هنا (Project settings > Your apps > Web app) */
+const CFG={apiKey:'AIzaSyDqS3L85rELhsop5kONR33dkjsiH_HIFbI',authDomain:'elnasr-4046d.firebaseapp.com',projectId:'elnasr-4046d'};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ST={pending:'قيد الانتظار',confirmed:'مؤكد',done:'تم',cancelled:'ملغي'};
+const opts=v=>Object.entries(ST).map(([k,t])=>`<option value="${k}"${v===k?' selected':''}>${t}</option>`).join('');
+$('#fs').insertAdjacentHTML('beforeend',opts(''));
+const dt=t=>t&&t.toDate?t.toDate().toLocaleString('ar-EG',{dateStyle:'short',timeStyle:'short'}):'';
+const wa=p=>'https://wa.me/2'+String(p).replace(/\D/g,'');
+let B=[],R=[];
+if(!CFG.apiKey){$('#le').textContent='املأ إعدادات Firebase (CFG) في أول الملف أولاً.'}
+else{
+firebase.initializeApp(CFG);const auth=firebase.auth(),db=firebase.firestore();let un=[];
+$('#login').onsubmit=e=>{e.preventDefault();$('#le').textContent='';auth.signInWithEmailAndPassword($('#em').value,$('#pw').value).catch(()=>$('#le').textContent='بيانات الدخول غير صحيحة')};
+$('#out').onclick=()=>auth.signOut();
+const sub=(c,fn)=>db.collection(c).orderBy('createdAt','desc').limit(500).onSnapshot(s=>fn(s.docs.map(d=>({id:d.id,...d.data()}))),e=>alert('خطأ في القراءة: '+e.message));
+auth.onAuthStateChanged(u=>{$('#login').hidden=!!u;$('#app').hidden=!u;un.forEach(f=>f());un=[];
+if(u)un=[sub('bookings',l=>{B=l;drawB()}),sub('prescriptions',l=>{R=l;drawR()})]});
+document.addEventListener('change',e=>{const s=e.target.closest('select[data-id]');if(s)db.collection(s.dataset.c).doc(s.dataset.id).update({status:s.value})});
+document.addEventListener('click',e=>{const d=e.target.closest('[data-del]');if(d&&confirm('حذف هذا العنصر نهائياً؟'))db.collection(d.dataset.c).doc(d.dataset.del).delete()});
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));['tb','tr'].forEach(i=>$('#'+i).hidden=i!==b.dataset.t)});
+$('#q').oninput=$('#fs').onchange=()=>drawB();
+function drawB(){const q=$('#q').value.trim().toLowerCase(),f=$('#fs').value,td=new Date().toDateString();
+$('#s1').textContent=B.length;$('#s2').textContent=B.filter(b=>b.status==='pending').length;$('#s3').textContent=B.filter(b=>b.createdAt&&b.createdAt.toDate&&b.createdAt.toDate().toDateString()===td).length;
+$('#rows').innerHTML=B.filter(b=>(!f||b.status===f)&&(!q||((b.name||'')+(b.phone||'')).toLowerCase().includes(q))).map(b=>`<tr><td>${dt(b.createdAt)}</td><td>${esc(b.name)}</td><td dir="ltr"><a href="${wa(b.phone)}" target="_blank" rel="noopener">${esc(b.phone)}</a></td><td>${b.service==='home'?'زيارة منزلية':'في المعمل'}</td><td>${esc(b.date)}</td><td>${esc(b.tests)}${b.msg?'<br><small>'+esc(b.msg)+'</small>':''}</td><td><select data-c="bookings" data-id="${b.id}">${opts(b.status)}</select></td><td><button class="del" data-c="bookings" data-del="${b.id}">حذف</button></td></tr>`).join('')||'<tr><td colspan="8">لا توجد حجوزات.</td></tr>'}
+function drawR(){$('#s4').textContent=R.length;
+$('#rx').innerHTML=R.map(r=>{const ok=/^https:\/\/res\.cloudinary\.com\//.test(r.url||'');const img=ok&&/\.(jpe?g|png|webp)$/i.test(r.url);
+return `<div class="card">${img?`<a href="${esc(r.url)}" target="_blank" rel="noopener"><img src="${esc(r.url)}" alt="روشتة" loading="lazy"></a>`:''}<b>${esc(r.name)}</b><a dir="ltr" href="${wa(r.phone)}" target="_blank" rel="noopener">${esc(r.phone)}</a><small>${dt(r.createdAt)}</small>${ok?`<a href="${esc(r.url)}" target="_blank" rel="noopener">فتح الروشتة</a>`:''}<select data-c="prescriptions" data-id="${r.id}">${opts(r.status)}</select><button class="del" data-c="prescriptions" data-del="${r.id}">حذف</button></div>`}).join('')||'<p>لا توجد روشتات.</p>'}
+$('#csv').onclick=()=>{const c=v=>{v=String(v==null?'':v);if(/^[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'};
+const rows=[['التاريخ','الاسم','الجوال','الخدمة','موعد الزيارة','المطلوب','الحالة']].concat(B.map(b=>[dt(b.createdAt),b.name,b.phone,b.service==='home'?'زيارة منزلية':'في المعمل',b.date,b.tests,ST[b.status]||b.status]));
+const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+rows.map(r=>r.map(c).join(',')).join('\n')],{type:'text/csv'}));a.download='bookings.csv';a.click()};
+</script>
+</body>
+</html>
