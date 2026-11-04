@@ -23,7 +23,7 @@ header img{height:54px;display:block}nav{position:fixed;top:0;bottom:0;inset-inl
 html[dir=rtl] nav{transform:translateX(105%)}
 nav.open,html[dir=rtl] nav.open{transform:none;visibility:visible}
 nav a{color:var(--pri);font-weight:600;padding:12px 10px;border-radius:10px;border-bottom:1px solid var(--bd)}nav a:hover{background:var(--alt);color:var(--gold)}
-#cb{display:none;position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:84px;right:84px;margin:auto;max-width:440px;background:var(--pri);color:#fff;border-radius:30px;padding:8px 10px 8px 18px;align-items:center;justify-content:space-between;gap:10px;z-index:35;box-shadow:0 6px 18px #0005;font-weight:600}
+#cb{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--pri);color:#fff;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));align-items:center;justify-content:space-between;gap:8px;z-index:35;box-shadow:0 -4px 18px #0004;font-weight:600}.hc .wa{margin-bottom:64px}.hc #up{margin-bottom:64px}#cb .x{background:#c0392b}
 #ov{position:fixed;inset:0;background:#0007;z-index:55;display:none}#ov.show{display:block}
 .bg{background:var(--pri);color:#fff;border:0;border-radius:10px;width:42px;height:42px;font-size:1.4rem;cursor:pointer;line-height:1;flex:none}
 .btn{display:inline-block;border:0;cursor:pointer;background:var(--gold);color:#fff;font:inherit;font-weight:700;padding:10px 22px;border-radius:30px;transition:.25s}.btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px #c8a45a66}
@@ -120,10 +120,13 @@ footer{background:var(--pri);color:#e8edf2;padding:40px 0 20px}footer .grid{grid
 
 <section id="pay"><div class="wrap reveal"><h2 data-en="Payment: InstaPay or Vodafone Cash">الدفع: إنستاباي أو فودافون كاش</h2><p class="sub" data-en="Transfer the amount to the number below, then send us the screenshot on WhatsApp to confirm.">حوّل المبلغ على الرقم التالي، ثم أرسل لنا صورة التحويل على واتساب للتأكيد.</p>
 <div class="grid" style="max-width:860px"><div class="card" style="text-align:center"><div class="ic">💸</div><b>InstaPay · إنستاباي</b><div class="price" dir="ltr" style="font-size:1.8rem">01062610816</div>
-<p><button class="btn sm" id="cp" data-en="Copy number">نسخ الرقم</button> &nbsp; <a class="btn sm" id="ps" href="#" target="_blank" rel="noopener" data-en="Send transfer screenshot">إرسال صورة التحويل</a></p>
+<p><button class="btn sm" id="cp" data-en="Copy number">نسخ الرقم</button> &nbsp; <a class="btn sm" id="ps" href="#payrep" data-en="I have paid">تم الدفع</a></p>
 <ol style="text-align:start;color:var(--mut)"><li data-en="Open the InstaPay app and choose “Send to mobile number”.">افتح تطبيق إنستاباي واختر «تحويل إلى رقم هاتف».</li><li data-en="Enter the number above and the exact amount.">اكتب الرقم أعلاه والمبلغ المطلوب.</li><li data-en="Screenshot the confirmation and send it to us on WhatsApp.">صوّر شاشة التأكيد وأرسلها لنا على واتساب.</li></ol></div><div class="card" style="text-align:center"><div class="ic">📱</div><b data-en="Vodafone Cash">فودافون كاش</b><div class="price" dir="ltr" style="font-size:1.8rem">01062610816</div>
-<p><button class="btn sm" id="cp2" data-en="Copy number">نسخ الرقم</button> &nbsp; <a class="btn sm" id="ps2" href="#" target="_blank" rel="noopener" data-en="Send transfer screenshot">إرسال صورة التحويل</a></p>
-<ol style="text-align:start;color:var(--mut)"><li data-en="Open the Ana Vodafone app and choose Vodafone Cash, then Send money.">افتح تطبيق أنا فودافون واختر فودافون كاش ثم تحويل أموال.</li><li data-en="Enter the number above and the exact amount.">اكتب الرقم أعلاه والمبلغ المطلوب.</li><li data-en="Screenshot the confirmation and send it to us on WhatsApp.">صوّر شاشة التأكيد وأرسلها لنا على واتساب.</li></ol></div></div></div></section>
+<p><button class="btn sm" id="cp2" data-en="Copy number">نسخ الرقم</button> &nbsp; <a class="btn sm" id="ps2" href="#payrep" data-en="I have paid">تم الدفع</a></p>
+<ol style="text-align:start;color:var(--mut)"><li data-en="Open the Ana Vodafone app and choose Vodafone Cash, then Send money.">افتح تطبيق أنا فودافون واختر فودافون كاش ثم تحويل أموال.</li><li data-en="Enter the number above and the exact amount.">اكتب الرقم أعلاه والمبلغ المطلوب.</li><li data-en="Screenshot the confirmation and send it to us on WhatsApp.">صوّر شاشة التأكيد وأرسلها لنا على واتساب.</li></ol></div></div><form id="payrep" class="card" style="max-width:640px;margin-top:18px" novalidate><b data-en="Already paid? Confirm your payment">دفعت؟ أكّد عملية الدفع</b>
+<div class="two"><input name="nm" placeholder="الاسم" data-ph-en="Name"><input name="ph" placeholder="رقم الجوال" data-ph-en="Mobile number" inputmode="tel"></div>
+<div class="two"><input name="am" type="number" min="1" placeholder="المبلغ المحوّل (ج.م)" data-ph-en="Amount transferred (EGP)"><select name="mt"><option value="InstaPay">InstaPay</option><option value="Vodafone Cash">Vodafone Cash</option></select></div>
+<label style="color:var(--mut)" data-en="Transfer screenshot (optional)">صورة التحويل (اختياري)</label><input type="file" id="pri" accept="image/*"><div class="err" id="pre"></div><button class="btn" data-en="Confirm payment">تأكيد الدفع</button></form></div></section>
 <section class="alt" id="blog" hidden><div class="wrap"><h2 data-en="Health articles">مقالات صحية</h2><p class="sub" data-en="Tips and information from our specialists.">نصائح ومعلومات من أخصائيينا.</p><div class="grid" id="blogGrid"></div></div></section>
 <section id="faq"><div class="wrap reveal"><h2 data-en="FAQ">الأسئلة الشائعة</h2><p class="sub">&nbsp;</p>
 <details><summary data-en="Do I need to fast before my test?">هل أحتاج للصيام قبل التحليل؟</summary><p data-en="Some tests (e.g. fasting glucose, lipids) need 8–12 hours of fasting. Ask us when booking.">بعض التحاليل (مثل سكر الصائم والدهون) تتطلب صيام 8–12 ساعة. اسألنا عند الحجز.</p></details>
@@ -141,7 +144,7 @@ footer{background:var(--pri);color:#e8edf2;padding:40px 0 20px}footer .grid{grid
 <div class="wrap" style="text-align:center;margin-top:18px;font-size:.85rem;opacity:.8">© 2026 <span data-en="El-NASR Medical Laboratories. All rights reserved.">معمل النصر للتحاليل الطبية. جميع الحقوق محفوظة.</span></div></footer>
 
 <div id="pm" hidden><div class="in"></div></div>
-<div id="cb"><span id="cbt"></span><button class="btn sm" id="cbb" data-en="Book now">احجز الآن</button></div>
+<div id="cb"><span id="cbt"></span><span style="display:flex;gap:8px"><button class="btn sm x" id="cbx" data-en="Clear all">مسح الكل</button><button class="btn sm" id="cbb" data-en="Book now">احجز الآن</button></span></div>
 <a class="wa" href="tel:+201050379498" style="bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--gold);font-size:1.5rem" aria-label="Call">📞</a>
 <a class="wa" href="https://wa.me/201550869309" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
 <button id="up" aria-label="top">↑</button><div class="toast" id="t"></div>
@@ -165,18 +168,28 @@ $$('[data-en]').forEach(e=>e.dataset.ar=e.textContent);$$('[data-ph-en]').forEac
 $('#lb').onclick=()=>setLang(L==='ar'?'en':'ar');$('#q').oninput=render;render();
 const ok=p=>/^01[0125]\d{8}$/.test(p.replace(/\s/g,''));
 function toast(m){const t=$('#t');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3500)}
-function wa(txt){window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(txt),'_blank')}
-$('#bf').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),er=$('#be');
-if(!ok(f.get('ph'))){er.textContent=L==='en'?'Enter a valid Egyptian mobile number.':'أدخل رقم جوال مصري صحيح.';return}
-er.textContent='';save('bookings',{name:f.get('nm'),phone:f.get('ph'),service:f.get('svc'),date:f.get('dt'),tests:f.get('tests'),msg:f.get('msg')});wa(`حجز جديد / New booking\nالاسم: ${f.get('nm')}\nالجوال: ${f.get('ph')}\nالخدمة: ${f.get('svc')==='home'?'زيارة منزلية':'في المعمل'}\nالتاريخ: ${f.get('dt')}\nالمطلوب: ${f.get('tests')}\n${f.get('msg')}`);
-toast(L==='en'?'Request ready – confirm it on WhatsApp ✔':'تم تجهيز الطلب – أكّده عبر واتساب ✔')};
-$('#rf').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),er=$('#re');
-if(!ok(f.get('ph'))||!f.get('code').trim()){er.textContent=L==='en'?'Enter phone and result code.':'أدخل رقم الهاتف وكود النتيجة.';return}
-er.textContent='';wa(`طلب نتيجة\nالهاتف: ${f.get('ph')}\nالكود: ${f.get('code')}`)};
+function done(t,m,d){const en=L==='en';$('#pm .in').innerHTML=`<div style="text-align:center"><div style="font-size:3.2rem">✅</div><h2 style="margin:0 0 8px">${E(t)}</h2><p>${E(m)}</p>${(d||[]).filter(x=>x[1]).map(x=>`<div style="display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--bd);padding:8px 0;text-align:start"><span style="color:var(--mut)">${E(x[0])}</span><b>${E(x[1])}</b></div>`).join('')}<br><button class="btn" onclick="$('#pm').hidden=true;scrollTo({top:0})">${en?'Back to home':'العودة للرئيسية'}</button></div>`;$('#pm').hidden=false}
+const bad=()=>L==='en'?'Could not send. Please try again or contact us on WhatsApp.':'تعذر الإرسال. حاول مرة أخرى أو تواصل معنا على واتساب.';
+const badPh=()=>L==='en'?'Enter a valid Egyptian mobile number.':'أدخل رقم جوال مصري صحيح.';
+$('#bf').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target),er=$('#be'),en=L==='en',b=e.target.querySelector('button');
+if(!ok(f.get('ph'))){er.textContent=badPh();return}
+er.textContent='';b.disabled=true;
+try{await saveP('bookings',{name:f.get('nm'),phone:f.get('ph'),service:f.get('svc'),date:f.get('dt'),tests:f.get('tests'),msg:f.get('msg')});e.target.reset();cart.clear();render();bar();
+done(en?'Booking completed ✔':'تمت عملية الحجز بنجاح ✔',en?'Thank you! We received your booking and will contact you to confirm the appointment.':'شكراً لك! تم استلام طلب الحجز وسنتواصل معك لتأكيد الموعد.',[[en?'Name':'الاسم',f.get('nm')],[en?'Mobile':'الجوال',f.get('ph')],[en?'Date':'الموعد',f.get('dt')],[en?'Requested':'المطلوب',f.get('tests')]])}
+catch(x){er.textContent=bad()}b.disabled=false};
+$('#rf').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target),er=$('#re'),en=L==='en',b=e.target.querySelector('button');
+if(!ok(f.get('ph'))||!f.get('code').trim()){er.textContent=en?'Enter phone and result code.':'أدخل رقم الهاتف وكود النتيجة.';return}
+er.textContent='';b.disabled=true;
+try{await saveP('bookings',{name:'',phone:f.get('ph'),service:'results',date:'',tests:'طلب نتيجة - كود: '+f.get('code'),msg:''});e.target.reset();done(en?'Request received ✔':'تم استلام طلبك ✔',en?'We will send your results as soon as they are ready.':'سنرسل لك نتيجتك فور جاهزيتها.')}
+catch(x){er.textContent=bad()}b.disabled=false};
+$('#payrep').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target),er=$('#pre'),en=L==='en',b=e.target.querySelector('button'),fl=$('#pri').files[0];
+if(!ok(f.get('ph'))||!(+f.get('am')>0)){er.textContent=en?'Enter a valid mobile number and the amount.':'أدخل رقم جوال صحيح والمبلغ.';return}
+er.textContent='';b.disabled=true;
+try{const o={name:f.get('nm'),phone:f.get('ph'),amount:f.get('am'),method:f.get('mt')};if(fl&&fl.type.startsWith('image/'))o.img=await shrink(fl);await saveP('payments',o);e.target.reset();
+done(en?'Payment recorded ✔':'تم تسجيل الدفع ✔',en?'Thank you! We will verify your transfer and confirm shortly.':'شكراً لك! سنراجع التحويل ونؤكد لك قريباً.',[[en?'Name':'الاسم',o.name],[en?'Amount':'المبلغ',o.amount+(en?' EGP':' ج.م')],[en?'Method':'الطريقة',o.method]])}
+catch(x){er.textContent=bad()}b.disabled=false};
 document.documentElement.classList.add('js');setTimeout(()=>$$('.reveal').forEach(r=>r.classList.add('in')),2000);const io=new IntersectionObserver(es=>es.forEach(x=>x.isIntersecting&&x.target.classList.add('in')),{threshold:.1});$$('.reveal').forEach(r=>io.observe(r));
-$('#ps').href='https://wa.me/'+WA+'?text='+encodeURIComponent('تحويل إنستاباي / InstaPay transfer – سأرسل صورة التحويل الآن');
 $('#cp').onclick=async()=>{try{await navigator.clipboard.writeText('01062610816');toast(L==='en'?'Number copied ✔':'تم نسخ الرقم ✔')}catch(x){toast('01062610816')}};
-$('#ps2').href=$('#ps').href;
 $('#cp2').onclick=()=>$('#cp').onclick();
 const bg=$('#bg'),nv=$('#nv'),ov=$('#ov');
 function tm(o){nv.classList.toggle('open',o);ov.classList.toggle('show',o);bg.setAttribute('aria-expanded',o);bg.textContent=o?'✕':'☰'}
@@ -184,13 +197,14 @@ bg.onclick=()=>tm(!nv.classList.contains('open'));ov.onclick=()=>tm(false);nv.on
 function tg(t,i){const k=t+i;cart.has(k)?cart.delete(k):cart.add(k);render();bar();fill()}
 function fill(){document.querySelector('[name=tests]').value=cart.size?$('#cb').dataset.v:''}
 function bar(){const b=$('#cb'),en=L==='en';let s=0;const nm=[];cart.forEach(k=>{const it=k[0]==='p'?PACKS[+k.slice(1)]:TESTS[+k.slice(1)];s+=it[2];nm.push(en?it[1]:it[0])});
-b.style.display=cart.size?'flex':'none';$('#cbt').textContent=cart.size+(en?' selected · ':' عنصر · ')+s+(en?' EGP':' ج.م');b.dataset.v=nm.join(', ')+' ('+s+(en?' EGP':' ج.م')+')'}
+b.style.display=cart.size?'flex':'none';document.body.classList.toggle('hc',cart.size>0);$('#cbt').textContent=cart.size+(en?' selected · ':' عنصر · ')+s+(en?' EGP':' ج.م');b.dataset.v=nm.join(', ')+' ('+s+(en?' EGP':' ج.م')+')'}
+$('#cbx').onclick=()=>{cart.clear();render();bar();fill()};
 $('#cbb').onclick=()=>{fill();$('#book').scrollIntoView({behavior:'smooth'})};
 try{if(localStorage.getItem('lg')==='en')setLang('en')}catch(x){}
 const FB={project:'elnasr-4046d',key:'AIzaSyDqS3L85rELhsop5kONR33dkjsiH_HIFbI'}; /* Firebase project id + web API key, for the dashboard */
 function shrink(f){return new Promise((res,rej)=>{const i=new Image(),u=URL.createObjectURL(f);i.onload=()=>{const r=Math.min(1,1100/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=Math.round(i.width*r);c.height=Math.round(i.height*r);c.getContext('2d').drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);let q=.72,d=c.toDataURL('image/jpeg',q);while(d.length>800000&&q>.3){q-=.1;d=c.toDataURL('image/jpeg',q)}res(d)};i.onerror=rej;i.src=u})}
 function save(c,o){saveP(c,o).catch(()=>{})}
-function saveP(c,o){if(!FB.project||!FB.key)return Promise.reject();const fl={status:{stringValue:'pending'},createdAt:{timestampValue:new Date().toISOString()}};for(const k in o)fl[k]={stringValue:String(o[k]||'')};fetch('https://firestore.googleapis.com/v1/projects/'+FB.project+'/databases/(default)/documents/'+c+'?key='+FB.key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:fl})}).then(r=>{if(!r.ok)throw 0})}
+function saveP(c,o){if(!FB.project||!FB.key)return Promise.reject();const fl={status:{stringValue:'pending'},createdAt:{timestampValue:new Date().toISOString()}};for(const k in o)fl[k]=typeof o[k]==='boolean'?{booleanValue:o[k]}:typeof o[k]==='number'?{integerValue:String(o[k])}:{stringValue:String(o[k]||'')};fetch('https://firestore.googleapis.com/v1/projects/'+FB.project+'/databases/(default)/documents/'+c+'?key='+FB.key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:fl})}).then(r=>{if(!r.ok)throw 0})}
 (function(){if(!FB.project)return;const base='https://firestore.googleapis.com/v1/projects/'+FB.project+'/databases/(default)/documents/';
 const gv=v=>v?(v.stringValue!==undefined?v.stringValue:v.integerValue!==undefined?+v.integerValue:v.doubleValue!==undefined?v.doubleValue:v.booleanValue!==undefined?v.booleanValue:''):'';
 const ld=c=>fetch(base+c+'?pageSize=300&key='+FB.key).then(r=>r.ok?r.json():{}).then(j=>{const a=(j.documents||[]).map(d=>{const o={};for(const k in d.fields)o[k]=gv(d.fields[k]);return o});return[a.length,a.filter(o=>o.active!==false).sort((x,y)=>x.ord-y.ord)]}).catch(()=>[0,[]]);
@@ -212,7 +226,7 @@ rxf.onsubmit=async e=>{e.preventDefault();const f=new FormData(rxf),er=$('#rxe')
 if(!ok(f.get('ph'))){er.textContent=en?'Enter a valid Egyptian mobile number.':'أدخل رقم جوال مصري صحيح.';return}
 if(!file||!file.type.startsWith('image/')){er.textContent=en?'Please choose a photo (JPG or PNG) of the prescription.':'اختر صورة (JPG أو PNG) للروشتة.';return}
 er.textContent='';b.disabled=true;
-try{const img=await shrink(file);await saveP('prescriptions',{name:f.get('nm'),phone:f.get('ph'),img});rxf.reset();rxp.innerHTML='';toast(en?'Prescription received ✔ We will contact you soon.':'تم استلام الروشتة ✔ سنتواصل معك قريباً.')}
+try{const img=await shrink(file);await saveP('prescriptions',{name:f.get('nm'),phone:f.get('ph'),img});rxf.reset();rxp.innerHTML='';done(en?'Prescription received ✔':'تم استلام الروشتة ✔',en?'Thank you! Our team will review it and contact you soon.':'شكراً لك! سيراجعها فريق المعمل ويتواصل معك قريباً.')}
 catch(x){er.textContent=en?'Could not send. Please try again or contact us on WhatsApp.':'تعذر الإرسال. حاول مرة أخرى أو تواصل معنا على واتساب.'}
 b.disabled=false};
 const co=new IntersectionObserver(es=>es.forEach(x=>{if(!x.isIntersecting)return;const el=x.target,n=+el.dataset.n;let v=0;const s=Math.ceil(n/60);const i=setInterval(()=>{v=Math.min(n,v+s);el.textContent='+'+v.toLocaleString('en');v>=n&&clearInterval(i)},20);co.unobserve(el)}),{threshold:.5});$$('[data-n]').forEach(n=>co.observe(n));
